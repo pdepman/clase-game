@@ -1,10 +1,14 @@
 object puenteBrooklyn {
+    var property position = game.center() 
+    
     method dejaPasar(mensajero) = mensajero.peso() < 1000
+    method image() = "brooklyn.png"
 }
 
 object matrix {
     var property position = game.center() 
     method dejaPasar(mensajero) = mensajero.puedeLlamar()
+    method image() = "matrix.png"
     
 }
 
@@ -46,6 +50,8 @@ object camion {
 
 object neo {
     var tieneCredito = true
+    var property position = game.origin()
+    method image() = "neo.png"
 
     method peso() = 0
     method puedeLlamar() = tieneCredito
@@ -54,5 +60,7 @@ object neo {
 object chuckNorris {
     method peso() = 900
     method puedeLlamar() = true
+    var property position = game.origin()
+    method image() = "chuck_norris.png"
 
 }

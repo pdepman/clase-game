@@ -1,0 +1,12 @@
+import wollok.game.*
+import example.*
+
+
+program juego {
+      game.width(10)
+      game.height(7)
+      game.cellSize(50)
+      game.title("Juego")  
+      game.start()
+}
+

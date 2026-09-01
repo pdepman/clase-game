@@ -1,0 +1,59 @@
+import wollok.game.*
+import example.*
+
+
+program juego {
+      game.width(10)
+      game.height(7)
+      game.cellSize(50)
+      game.title("Juego")
+      game.addVisualCharacter(neo)
+      game.addVisual(puenteBrooklyn)
+      
+      const tick = game.tick(5000, {
+            programState.cambiarDestino()
+      }, false);
+      game.onCollideDo(neo, {elemento => 
+            if(elemento.dejaPasar(neo)) {
+                  neo.position(neo.position().right(4))
+            }
+            else{
+                  game.say(elemento, "Que haces mostro?")
+            }
+      })
+
+      keyboard.c().onPressDo({
+            chuckNorris.position(neo.position())            
+            game.removeVisual(neo);
+            game.addVisualCharacter(chuckNorris);
+             game.onCollideDo(chuckNorris, {elemento => 
+            if(elemento.dejaPasar(neo)) {
+                  chuckNorris.position(chuckNorris.position().right(4))
+            }
+            else{
+                  game.say(elemento, "Que haces mostro?")
+            }
+      })
+      })
+      
+      tick.start()
+      game.schedule(10000, { tick.stop() })
+      game.start()
+
+
+}
+
+
+object programState {
+      var destino = puenteBrooklyn 
+      method cambiarDestino() {
+            game.removeVisual(destino)
+            if(destino === puenteBrooklyn){
+                  destino = matrix
+            }
+            else{
+                  destino = puenteBrooklyn
+            }
+            game.addVisual(destino)
+      }
+}
