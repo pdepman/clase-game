@@ -1,12 +1,66 @@
 import wollok.game.*
 import example.*
 
-
-program juego {
-      game.width(10)
-      game.height(7)
-      game.cellSize(50)
-      game.title("Juego")  
-      game.start()
+object gameState {
+      var property destino = puenteBrooklyn
+      method cambiar() {
+            /* 
+            missing polymorphism???? lol
+            if(destino == puenteBrooklyn) {
+                  self.reemplazarObstaculo(matrix)
+            } else {
+                  self.reemplazarObstaculo(puenteBrooklyn)
+            } */
+            
+            // re cheto!
+            self.reemplazarObstaculo(destino.proximoDestino())
+      }
+      method reemplazarObstaculo(nuevoObstaculo) {
+            game.addVisual(nuevoObstaculo)
+            nuevoObstaculo.position(destino.position())
+            game.removeVisual(destino)
+            self.destino(nuevoObstaculo)
+      }
 }
 
+object config {
+  method configure() {
+    game.width(10)
+    game.height(10)
+    game.cellSize(50)
+    game.title("Juego")
+    game.addVisual(puenteBrooklyn)
+    game.addVisualCharacter(neo)
+    self.configureKeybind()
+    self.configureCollisions()
+    const tick = game.tick(3000, { gameState.cambiar() }, false)
+    tick.start()
+  }
+  
+  method configureCollisions() {
+      game.onCollideDo(puenteBrooklyn, {elemento =>
+            if(puenteBrooklyn.dejaPasar(elemento)) {
+                  elemento.position(elemento.position().right(3))
+            } else {
+                  elemento.position(elemento.position().left(1))
+            }
+            
+      })      
+  }
+
+  method configureKeybind() {
+    /* 
+    Para mover el personaje, no es necesario con el addVisualCharacter
+    keyboard.up().onPressDo(
+      { 
+        const newPosition = neo.position().up(1)
+        neo.position(newPosition)
+      }
+    ) */
+  }
+}
+
+program juego {
+  config.configure()
+  game.start()
+}
